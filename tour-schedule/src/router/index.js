@@ -25,8 +25,8 @@ const routes = [
     component: () => import("../views/TourSchedule.vue"),
   },
   {
-    path: "/TourScheduleById/:id",
-    name: "TourScheduleById",
+    path: "/tourSchedules/:id",
+    name: "tourSchedules",
     component: () => import("../views/TourScheduleById.vue"),
   },
 ];
