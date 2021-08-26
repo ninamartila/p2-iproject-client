@@ -2,7 +2,7 @@
   <div
     class="card text-center"
     style="margin-bottom: 15px"
-    @click="goToDetail(tourSchedule.id)"
+    @click="goToDetail()"
   >
     <div class="card-header">
       {{ tourSchedule.placeName }}
@@ -12,20 +12,29 @@
       <p class="card-text">{{ tourSchedule.description }}</p>
       <a href="#" class="btn btn-primary">Detail</a>
     </div>
-    <div class="card-footer text-muted">2 days ago</div>
+    <div class="card-footer text-muted">{{ getTimeAgo }}</div>
   </div>
 </template>
 
 <script>
+import moment from "moment";
 export default {
   name: "ListTourSchedulePublic",
   props: ["tourSchedule"],
   // created() {
   //   console.log(this);
   // },
+  computed: {
+    getTimeAgo() {
+      return moment(this.tourSchedule.createdAt).fromNow();
+    },
+  },
   methods: {
-    goToDetail(id) {
-      this.$router.push("/tourSchedules/" + id);
+    goToDetail() {
+      const { id, isPublic } = this.tourSchedule;
+      this.$router.push(
+        `/tourSchedules/${isPublic ? "public" : "private"}/${id}`
+      );
     },
   },
 };

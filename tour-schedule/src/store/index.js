@@ -114,7 +114,8 @@ export default new Vuex.Store({
         });
       }
     },
-    async listTourSchedulesById(context, id) {
+    async listTourSchedulesById(context, params) {
+      const { id, mode } = params;
       try {
         Vue.$toast.open({
           message: "Acquiring Tour Schedule information..",
@@ -129,8 +130,11 @@ export default new Vuex.Store({
           };
         }
 
-        const response = await axiosApi.get(`/tourSchedules/private/${id}`, axiosOptions);
-        context.commit("LIST_TOUR_SCHEDULE_DETAIL", response.data);
+        const response = await axiosApi.get(
+          `/tourSchedules/${mode}/${id}`,
+          axiosOptions
+        );
+        context.commit("LIST_TOUR_SCHEDULE_DETAIL", response.data.result);
       } catch (err) {
         Vue.$toast.open({
           message: err.response.data.message,
@@ -153,8 +157,10 @@ export default new Vuex.Store({
           };
         }
 
-
-        const response = await axiosApi.get(`/tourSchedules/private`, axiosOptions);
+        const response = await axiosApi.get(
+          `/tourSchedules/private`,
+          axiosOptions
+        );
         context.commit("LIST_TOUR_SCHEDULE_PIVATE", response.data);
       } catch (err) {
         Vue.$toast.open({
@@ -163,13 +169,37 @@ export default new Vuex.Store({
         });
       }
     },
-    // async addTourScheduleButtonHandler(context, payload) {
-    //   try {
-    //     context, payload
-    //   } catch (error) {
+    async addTourActions(context, params) {
+      try {
+        const { tourId, mode, body } = params;
+        const access_token = localStorage.getItem("access_token");
+        let axiosOptions = {};
 
-    //   }
-    // }
+        if (access_token) {
+          axiosOptions.headers = {
+            access_token: access_token,
+          };
+        }
+
+        const bodyParam = mode === "invite" ? body : undefined;
+
+        const response = await axiosApi.put(
+          `/tourSchedules/action/${tourId}/${mode}`,
+          bodyParam,
+          axiosOptions
+        );
+        if (response.status === 200) {
+          window.location.reload();
+        } else {
+          throw response;
+        }
+      } catch (error) {
+        Vue.$toast.open({
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
+    },
   },
   modules: {},
 });
