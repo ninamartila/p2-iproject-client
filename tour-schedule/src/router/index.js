@@ -26,8 +26,13 @@ const routes = [
   },
   {
     path: "/tourSchedules/:id",
-    name: "tourSchedules",
+    name: "TourScheduleById",
     component: () => import("../views/TourScheduleById.vue"),
+  },
+  {
+    path: "/addTourSchedules",
+    name: "AddTourSchedules",
+    component: () => import("../views/AddTourSchedule.vue"),
   },
 ];
 

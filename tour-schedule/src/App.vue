@@ -18,9 +18,9 @@ export default {
   },
   created: function () {
     if (localStorage.getItem("access_token")) {
-      this.$store.commit("CHANGE_IS_LOGGED_IN", true);
+      this.$store.commit("IS_LOGGED_IN", true);
     } else {
-      this.$store.commit("CHANGE_IS_LOGGED_IN", false);
+      this.$store.commit("IS_LOGGED_IN", false);
     }
   },
 };

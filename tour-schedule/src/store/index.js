@@ -163,6 +163,13 @@ export default new Vuex.Store({
         });
       }
     },
+    // async addTourScheduleButtonHandler(context, payload) {
+    //   try {
+    //     context, payload
+    //   } catch (error) {
+
+    //   }
+    // }
   },
   modules: {},
 });

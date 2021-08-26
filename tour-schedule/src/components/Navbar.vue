@@ -50,6 +50,16 @@
               My Tour Schedules
             </router-link>
           </li>
+          <li class="nav-item">
+            <router-link
+              class="nav-link"
+              aria-current="page"
+              to="/addTourSchedules"
+              v-if="isLoggedIn"
+            >
+              Add Tour Schedules
+            </router-link>
+          </li>
           <li>
             <a
               class="nav-link"
