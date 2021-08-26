@@ -15,20 +15,13 @@
       <div class="card">
         <div class="card-body">
           <form id="register-form">
-            <div>
-              <p class="font-weight-bold">Basic example</p>
-
-              <select class="selectpicker" data-live-search="true">
-                <option data-tokens="ketchup mustard">
-                  Hot Dog, Fries and a Soda
-                </option>
-                <option data-tokens="mustard">Burger, Shake and a Smile</option>
-                <option data-tokens="frosting">
-                  Sugar, Spice and all things nice
-                </option>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Data Place</label>
+              <select class="form-control" id="exampleFormControlSelect1">
+                <option>Data Place</option>
               </select>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 20px">
               <input
                 class="form-control"
                 type="date"
@@ -55,10 +48,40 @@
                 v-model="tourSchedule.memberSlot"
               />
             </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="text"
+                id="tourSchedule-description"
+                placeholder="Description"
+                v-model="tourSchedule.description"
+              />
+            </div>
+            <div class="form-group">
+              <input
+                class="form-control"
+                type="number"
+                id="tourSchedule-price"
+                placeholder="Price"
+                v-model="tourSchedule.price"
+              />
+            </div>
+            <div class="form-group">
+              <label for="exampleFormControlSelect1">Public</label>
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                v-model="isPublic"
+              >
+                <option :value="true">True</option>
+                <option :value="false">False</option>
+              </select>
+            </div>
             <button
               type="button"
               class="btn btn-primary btn-block"
               @click="addTourScheduleButtonHandler"
+              style="margin-top: 20px"
             >
               Add Tour Schedule
             </button>
@@ -82,7 +105,6 @@ export default {
         isPublic: "",
         description: "",
         price: "",
-        placeName: "",
       },
     };
   },

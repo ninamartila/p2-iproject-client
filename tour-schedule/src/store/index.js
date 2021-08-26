@@ -200,6 +200,27 @@ export default new Vuex.Store({
         });
       }
     },
+    async addTourScheduleButtonHandler(context, payload) {
+      try {
+        await axiosApi({
+          method: "POST",
+          url: "/tourSchedules",
+          data: {
+            planDate: payload.username,
+            endDate: payload.email,
+            memberSlot: payload.memberSlot,
+            isPublic: payload.isPublic,
+            description: payload.description,
+            price: payload.price,
+          },
+        });
+      } catch (error) {
+        Vue.$toast.open({
+          message: error.response.data.message,
+          type: "error",
+        });
+      }
+    },
   },
   modules: {},
 });
