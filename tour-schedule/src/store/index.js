@@ -15,6 +15,7 @@ export default new Vuex.Store({
     tourSchedules: [],
     tourSchedulesDetail: {},
     tourSchedulesPrivate: [],
+    userList: [],
   },
   mutations: {
     IS_LOGGED_IN(state, payload) {
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     },
     LIST_TOUR_SCHEDULE_PIVATE(state, payload) {
       state.tourSchedulesPrivate = payload;
+    },
+    USER_LIST(state, payload) {
+      state.userList = payload;
     },
   },
   actions: {
@@ -107,6 +111,25 @@ export default new Vuex.Store({
 
         const response = await axiosApi.get(`/tourSchedules/public`);
         context.commit("LIST_TOUR_SCHEDULE_PUBLIC", response.data);
+      } catch (err) {
+        Vue.$toast.open({
+          message: err.response.data.message,
+          type: "error",
+        });
+      }
+    },
+    async getUserList(context) {
+      try {
+        const access_token = localStorage.getItem("access_token");
+        let axiosOptions = {};
+
+        if (access_token) {
+          axiosOptions.headers = {
+            access_token: access_token,
+          };
+        }
+        const response = await axiosApi.get(`/userList`, axiosOptions);
+        context.commit("USER_LIST", response.data);
       } catch (err) {
         Vue.$toast.open({
           message: err.response.data.message,
@@ -202,18 +225,36 @@ export default new Vuex.Store({
     },
     async addTourScheduleButtonHandler(context, payload) {
       try {
-        await axiosApi({
+        const access_token = localStorage.getItem("access_token");
+        let headers = {};
+
+        if (access_token) {
+          headers = {
+            access_token: access_token,
+          };
+        }
+
+        const response = await axiosApi({
           method: "POST",
           url: "/tourSchedules",
           data: {
-            planDate: payload.username,
-            endDate: payload.email,
+            name: payload.name,
+            placeName: payload.placeName,
+            planDate: payload.planDate,
+            endDate: payload.endDate,
             memberSlot: payload.memberSlot,
             isPublic: payload.isPublic,
             description: payload.description,
             price: payload.price,
+            invitedUsers: payload.inviteMembers ? [payload.inviteMembers] : [],
           },
+          headers,
         });
+        if (response.status === 201) {
+          router.push("/");
+        } else {
+          throw response;
+        }
       } catch (error) {
         Vue.$toast.open({
           message: error.response.data.message,

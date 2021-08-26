@@ -16,10 +16,23 @@
         <div class="card-body">
           <form id="register-form">
             <div class="form-group">
-              <label for="exampleFormControlSelect1">Data Place</label>
-              <select class="form-control" id="exampleFormControlSelect1">
-                <option>Data Place</option>
-              </select>
+              <input
+                class="form-control"
+                type="text"
+                id="tourSchedule-name"
+                placeholder="Name"
+                v-model="tourSchedule.name"
+              />
+            </div>
+            <div class="form-group">
+              <vue-google-autocomplete
+                id="map"
+                classname="form-control"
+                placeholder="Search Places you want to trip"
+                v-on:placechanged="getPlaceData"
+                country="id"
+              >
+              </vue-google-autocomplete>
             </div>
             <div class="form-group" style="margin-top: 20px">
               <input
@@ -36,7 +49,7 @@
                 type="date"
                 id="tourSchedule-endDate"
                 placeholder="End Date"
-                v-model="tourSchedule.andDate"
+                v-model="tourSchedule.endDate"
               />
             </div>
             <div class="form-group">
@@ -67,6 +80,22 @@
               />
             </div>
             <div class="form-group">
+              <label for="inviteMembers">Invite Members</label>
+              <select
+                class="form-control"
+                id="inviteMembers"
+                v-model="tourSchedule.inviteMembers"
+              >
+                <option
+                  v-for="user in userList"
+                  :key="user.id"
+                  :value="user.id"
+                >
+                  {{ user.username }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group">
               <label for="exampleFormControlSelect1">Public</label>
               <select
                 class="form-control"
@@ -94,23 +123,42 @@
 </template>
 
 <script>
+import VueGoogleAutocomplete from "vue-google-autocomplete";
+
 export default {
   name: "AddTourSchedule",
+  components: {
+    VueGoogleAutocomplete,
+  },
   data: function () {
     return {
       tourSchedule: {
+        name: "",
         planDate: "",
         endDate: "",
-        memberSlot: "",
-        isPublic: "",
+        placeName: "",
+        inviteMembers: null,
+        memberSlot: null,
+        isPublic: false,
         description: "",
-        price: "",
+        price: null,
       },
     };
+  },
+  mounted() {
+    this.$store.dispatch("getUserList");
+  },
+  computed: {
+    userList() {
+      return this.$store.state.userList;
+    },
   },
   methods: {
     addTourScheduleButtonHandler() {
       this.$store.dispatch("addTourScheduleButtonHandler", this.tourSchedule);
+    },
+    getPlaceData: function (_, placeResultData) {
+      this.tourSchedule.placeName = placeResultData.name;
     },
   },
 };
