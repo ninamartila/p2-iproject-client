@@ -130,18 +130,25 @@
         </div>
       </div>
     </div>
+    <Weather />
   </div>
 </template>
 
 <script>
 import moment from "moment";
 import jwt from "../helper/jwt";
+import Weather from "./Weather.vue";
 
 export default {
   name: "TourScheduleById",
+  components: { Weather },
   created: function () {
     const { id, mode } = this.$route.params;
     this.$store.dispatch("listTourSchedulesById", { id, mode });
+    this.$store.state.location = {
+      latitude: this.$store.state.tourSchedulesDetail.place.location.lat,
+      longitude: this.$store.state.tourSchedulesDetail.place.location.lng,
+    };
   },
   computed: {
     tourSchedulesDetail() {
@@ -168,7 +175,7 @@ export default {
         const member = this.tourSchedulesDetail.Users.find(
           (item) => item.id === this.loggedInUser.id
         );
-        console.log({ member });
+
         if (member) {
           return (
             member.UserTourSchedule.role === "member" &&
@@ -183,7 +190,7 @@ export default {
         const member = this.tourSchedulesDetail.Users.find(
           (item) => item.id === this.loggedInUser.id
         );
-        console.log({ member });
+
         if (member) {
           return (
             member.UserTourSchedule.role === "member" &&
@@ -198,7 +205,7 @@ export default {
         const member = this.tourSchedulesDetail.Users.find(
           (item) => item.id === this.loggedInUser.id
         );
-        console.log({ member });
+
         if (member) {
           return (
             member.UserTourSchedule.role === "member" &&
@@ -222,7 +229,6 @@ export default {
   },
   methods: {
     onClickAction(mode) {
-      console.log(this.isLoggedIn);
       if (this.isLoggedIn) {
         this.$store.dispatch("addTourActions", {
           tourId: this.tourSchedulesDetail.id,

@@ -5,11 +5,15 @@
     @click="goToDetail()"
   >
     <div class="card-header">
-      {{ tourSchedule.placeName }}
+      {{ tourSchedule.placeName || tourSchedule.TourSchedule.placeName }}
     </div>
     <div class="card-body">
-      <h5 class="card-title">{{ tourSchedule.name }}</h5>
-      <p class="card-text">{{ tourSchedule.description }}</p>
+      <h5 class="card-title">
+        {{ tourSchedule.name || tourSchedule.TourSchedule.name }}
+      </h5>
+      <p class="card-text">
+        {{ tourSchedule.description || tourSchedule.TourSchedule.description }}
+      </p>
       <a href="#" class="btn btn-primary">Detail</a>
     </div>
     <div class="card-footer text-muted">{{ getTimeAgo }}</div>
@@ -26,12 +30,17 @@ export default {
   // },
   computed: {
     getTimeAgo() {
-      return moment(this.tourSchedule.createdAt).fromNow();
+      return moment(
+        this.tourSchedule.createdAt || this.tourSchedule.TourSchedule.createdAt
+      ).fromNow();
     },
   },
   methods: {
     goToDetail() {
-      const { id, isPublic } = this.tourSchedule;
+      const id = this.tourSchedule.id || this.tourSchedule.TourSchedule.id;
+      const isPublic =
+        this.tourSchedule.isPublic || this.tourSchedule.TourSchedule.isPublic;
+
       this.$router.push(
         `/tourSchedules/${isPublic ? "public" : "private"}/${id}`
       );

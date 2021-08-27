@@ -100,7 +100,7 @@
               <select
                 class="form-control"
                 id="exampleFormControlSelect1"
-                v-model="isPublic"
+                v-model="tourSchedule.isPublic"
               >
                 <option :value="true">True</option>
                 <option :value="false">False</option>

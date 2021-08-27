@@ -16,9 +16,14 @@
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link class="nav-link" aria-current="page" to="/">
+            <a
+              class="nav-link"
+              aria-current="page"
+              href="/"
+              style="cursor: pointer"
+            >
               Home
-            </router-link>
+            </a>
           </li>
           <li class="nav-item">
             <router-link
@@ -41,24 +46,26 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link
+            <a
               class="nav-link"
               aria-current="page"
-              to="/tourSchedules"
+              href="/tourSchedules"
               v-if="isLoggedIn"
+              style="cursor: pointer"
             >
               My Tour Schedules
-            </router-link>
+            </a>
           </li>
           <li class="nav-item">
-            <router-link
+            <a
               class="nav-link"
               aria-current="page"
-              to="/addTourSchedules"
+              href="/addTourSchedules"
               v-if="isLoggedIn"
+              style="cursor: pointer"
             >
               Add Tour Schedules
-            </router-link>
+            </a>
           </li>
           <li>
             <a

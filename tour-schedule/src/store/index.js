@@ -16,6 +16,7 @@ export default new Vuex.Store({
     tourSchedulesDetail: {},
     tourSchedulesPrivate: [],
     userList: [],
+    location: {}
   },
   mutations: {
     IS_LOGGED_IN(state, payload) {
@@ -152,11 +153,18 @@ export default new Vuex.Store({
             access_token: access_token,
           };
         }
+        let response
 
-        const response = await axiosApi.get(
-          `/tourSchedules/${mode}/${id}`,
-          axiosOptions
-        );
+        if (mode === "private") {
+          response = await axiosApi.get(
+            `/tourSchedules/${mode}/${id}`,
+            axiosOptions
+          );
+        } else {
+          response = await axiosApi.get(
+            `/tourSchedules/${mode}/${id}`
+          );
+        }
         context.commit("LIST_TOUR_SCHEDULE_DETAIL", response.data.result);
       } catch (err) {
         Vue.$toast.open({
@@ -184,6 +192,7 @@ export default new Vuex.Store({
           `/tourSchedules/private`,
           axiosOptions
         );
+
         context.commit("LIST_TOUR_SCHEDULE_PIVATE", response.data);
       } catch (err) {
         Vue.$toast.open({
